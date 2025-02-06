@@ -12,7 +12,7 @@ class Solution {
         
         for (int val : productCount.values()) {
             if (val > 1) {
-                count += val * (val - 1) / 2 * 8;
+                count += val * (val - 1) * 4;
             }
         }
         
