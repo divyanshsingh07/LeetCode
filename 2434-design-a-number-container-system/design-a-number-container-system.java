@@ -1,34 +1,36 @@
 class NumberContainers {
-    Map<Integer, Integer> indexToNumber;
-    Map<Integer, TreeSet<Integer>> numberToIndices;
+
+    HashMap<Integer,PriorityQueue<Integer>> res;
+    HashMap<Integer,Integer> index_val;
+
     public NumberContainers() {
-        indexToNumber = new HashMap<>();
-        numberToIndices = new HashMap<>();
+        res = new HashMap<>();
+        index_val = new HashMap<>();
     }
     
     public void change(int index, int number) {
-        if (indexToNumber.containsKey(index)) {
-            int oldNumber = indexToNumber.get(index);
-            numberToIndices.get(oldNumber).remove(index);
-            if (numberToIndices.get(oldNumber).isEmpty()) {
-                numberToIndices.remove(oldNumber);
+
+        if(index_val.containsKey(index)){
+            int num = index_val.get(index);
+            if(num == number){
+                return ;
             }
+
+            res.get(num).remove(index);
         }
-        indexToNumber.put(index, number);
-        if (!numberToIndices.containsKey(number)) {
-            numberToIndices.put(number, new TreeSet<>());
-        }
-        numberToIndices.get(number).add(index);
+
+        res.computeIfAbsent(number, k-> new PriorityQueue<>()).offer(index);
+        index_val.put(index, number);
     }
     
-    public int find(int number) {
-        if (numberToIndices.containsKey(number)) {
-            TreeSet<Integer> indices = numberToIndices.get(number);
-            if (!indices.isEmpty()) {
-                return indices.first();
-            }
+    public int find(int number) 
+    {
+        PriorityQueue<Integer> pq = res.getOrDefault(number, new PriorityQueue<>());
+        if(pq.size() == 0)
+        {
+            return -1;
         }
-        return -1;
+        return pq.peek();
     }
 }
 
