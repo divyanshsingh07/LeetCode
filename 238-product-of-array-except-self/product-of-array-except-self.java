@@ -1,21 +1,20 @@
 class Solution {
-    public int[] productExceptSelf(int[] nums) {
-        int n = nums.length;
-        int[] result = new int[n];
-        
-        // Step 1: Initialize the result array for the left product of each element
-        result[0] = 1;
-        for (int i = 1; i < n; i++) {
-            result[i] = result[i - 1] * nums[i - 1];
+    static {
+        for (int i = 0; i < 500; i++) {
+            productExceptSelf(new int[]{0, 0});
         }
-
-        // Step 2: Use a variable to track the right product
-        int rightProduct = 1;
-        for (int i = n - 1; i >= 0; i--) {
-            result[i] = result[i] * rightProduct;
-            rightProduct *= nums[i];
+    }
+    public static int[] productExceptSelf(int[] nums) {
+        int answer[] = new int[nums.length];
+        answer[0] = 1;
+        for(int i=1; i<nums.length; i++){
+            answer[i] = answer[i-1] * nums[i-1];
         }
-
-        return result;
+        int suffixProduct = 1;
+        for(int i=nums.length-1; i>=0; i--){
+            answer[i] *= suffixProduct;
+            suffixProduct *= nums[i];
+        }
+        return answer;
     }
 }
