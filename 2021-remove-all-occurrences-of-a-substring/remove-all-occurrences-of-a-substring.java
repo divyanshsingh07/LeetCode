@@ -9,6 +9,5 @@ class Solution {
             }
         }
         return st.toString();
-        
     }
 }
