@@ -23,11 +23,11 @@ class Solution {
         int punishmentNum = 0;
 
         // Iterate through numbers in range [1, n]
-        for (int currentNum = 1; currentNum <= n; currentNum++) {
-            int squareNum = currentNum * currentNum;
+        for (int i = 1; i <= n; i++) {
+            int squareNum = i*i;
 
             // Check if valid partition can be found and add squared number if so
-            if (canPartition(squareNum, currentNum)) {
+            if (canPartition(squareNum, i)) {
                 punishmentNum += squareNum;
             }
         }
