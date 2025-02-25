@@ -1,10 +1,22 @@
-public class Solution {
-    public int trap(int[] h) {
-        int l = 0, r = h.length - 1, lmax = Integer.MIN_VALUE, rmax = Integer.MIN_VALUE, ans = 0;
-        while (l < r) {
-        lmax = Math.max(lmax, h[l]);
-        rmax = Math.max(rmax, h[r]);
-        ans += (lmax < rmax) ? lmax - h[l++] : rmax - h[r--];
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+        int ans = 0;
+        int i = 0;
+        int j = n - 1;
+        int max = 0;
+        while (i < j) {
+            if (height[i] <= height[j]) {
+                max = Math.max(max, height[i]);
+                ans -= height[i];
+                i++;
+            }
+            else {
+                max = Math.max(max, height[j]);
+                ans -= height[j];
+                j--;
+            }
+            ans += max;
         }
         return ans;
     }
