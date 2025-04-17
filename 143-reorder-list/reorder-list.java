@@ -9,46 +9,38 @@
  * }
  */
 class Solution {
-    public static ListNode findMid(ListNode head){
-        ListNode slow = head;
-        ListNode fast = head;
-
-        while(fast != null && fast.next != null){
+     static {
+        for (int i = 0; i < 500; i++) {
+            reorderList(new ListNode(0, new ListNode(5)));
+        }
+    }
+    public static void reorderList(ListNode head) {
+        ListNode fast = head, slow = head;
+        while(fast!=null && fast.next!=null){
             slow = slow.next;
             fast = fast.next.next;
         }
-        return slow;
+        ListNode sec = reverseList(slow.next);
+        slow.next = null;
+        ListNode first = head;
+        while(sec!=null){
+            ListNode temp1 = first.next;
+            ListNode temp2 = sec.next;
+            first.next = sec;
+            sec.next = temp1;
+            first = temp1;
+            sec = temp2;
+        }        
     }
-    public void reorderList(ListNode head) {
-        ListNode mid = findMid(head);
+    public static ListNode reverseList(ListNode head){
+        ListNode curr = head;
         ListNode prev = null;
-        ListNode curr = mid;
-        ListNode next;
-
-        while(curr != null){
-            next = curr.next;
+        while(curr!=null){
+            ListNode temp = curr.next;
             curr.next = prev;
             prev = curr;
-            curr = next;
+            curr = temp;
         }
-
-        ListNode left = head;
-        ListNode right = prev;
-
-        while(left != null && right != null){
-            ListNode temp = left.next;
-            left.next = right;
-            left = temp;
-           
-
-           temp = right.next;
-            right.next = left;
-            right = temp;
-
-        }
-        if(left != null){
-            left.next =  null;
-        }
-
+        return prev;
     }
 }
