@@ -26,8 +26,8 @@ class Solution {
             for(int i=0;i<n;i++){
                 TreeNode curr = q.poll();
                 l.add(curr.val);
-                if(curr.left!=null) q.add(curr.left);
-                if(curr.right!=null) q.add(curr.right);
+                if(curr.left!=null) q.offer(curr.left);
+                if(curr.right!=null) q.offer(curr.right);
             }
             if (reverse) {
                 Collections.reverse(l);
