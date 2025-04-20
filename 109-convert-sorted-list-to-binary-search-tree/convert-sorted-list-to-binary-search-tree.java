@@ -25,27 +25,36 @@
  */
 class Solution {
     public TreeNode sortedListToBST(ListNode head) {
-        List<Integer> values = new ArrayList<>();
+        if (head == null) return null;
+        if (head.next == null) return new TreeNode(head.val);
 
-        // Step 1: Copy linked list to array
-        while (head != null) {
-            values.add(head.val);
-            head = head.next;
-        }
+        // Find the middle node
+        ListNode mid = findMiddle(head);
 
-        // Step 2: Convert array to BST
-        return buildBST(values, 0, values.size() - 1);
+        TreeNode root = new TreeNode(mid.val);
+
+        // Recursively build left and right subtrees
+        root.left = sortedListToBST(head == mid ? null : head); // Left list before mid
+        root.right = sortedListToBST(mid.next); // Right list after mid
+
+        return root;
     }
 
-    private TreeNode buildBST(List<Integer> values, int left, int right) {
-        if (left > right) return null;
+    // Helper to find the middle of the linked list
+    private ListNode findMiddle(ListNode head) {
+        ListNode prev = null, slow = head, fast = head;
 
-        int mid = left + (right - left) / 2;
-        TreeNode node = new TreeNode(values.get(mid));
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
 
-        node.left = buildBST(values, left, mid - 1);
-        node.right = buildBST(values, mid + 1, right);
+        // Disconnect the left half from mid
+        if (prev != null) {
+            prev.next = null;
+        }
 
-        return node;
+        return slow;
     }
 }
