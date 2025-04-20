@@ -1,34 +1,25 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public List<String> binaryTreePaths(TreeNode root) {
-        List<String>d=new ArrayList<>();
-        leaf(d,root,"");
-        return d;
-            }
-    static void leaf(List<String>d,TreeNode root,String s){
-        if(root==null)return;
-        if(root.left==null && root.right==null){
-            s+=Integer.toString(root.val);
-            d.add(s);
+        List<String> list = new ArrayList<>();
+        if (root == null) return list;
+        helper(root, list, new StringBuilder());
+        return list;
+    }
+
+    private void helper(TreeNode node, List<String> list, StringBuilder path) {
+        if (node == null) return;
+
+        int len = path.length(); // Save length before appending
+        path.append(node.val);
+
+        if (node.left == null && node.right == null) {
+            list.add(path.toString()); // Leaf node, save path
+        } else {
+            path.append("->");
+            helper(node.left, list, path);
+            helper(node.right, list, path);
         }
-        else{
-            s+=Integer.toString(root.val)+"->";
-            leaf(d,root.left,s);
-            leaf(d,root.right,s);
-        }
+
+        path.setLength(len); // Backtrack to previous state
     }
 }
