@@ -1,34 +1,28 @@
-public class Solution {
+class Solution {
     public int minDistance(String word1, String word2) {
-        int m = word1.length();
-        int n = word2.length();
-        
-        // Create a DP table with (m+1) rows and (n+1) columns
-        int[][] dp = new int[m + 1][n + 1];
-        
-        // Base cases: converting from an empty string
-        for (int i = 0; i <= m; i++) {
-            dp[i][0] = i; // m deletions to make word1 empty
+        int n1 = word1.length();
+        int n2 = word2.length();
+        int[][] dp = new int[n1][n2];
+        for(int[] r : dp){
+            Arrays.fill(r , -1);
         }
-        
-        for (int j = 0; j <= n; j++) {
-            dp[0][j] = j; // j insertions to make word2
+        return f(n1-1 , n2-1, word1 , word2 , dp);
+    }
+
+    public int f(int ind1 , int ind2 , String s1 , String s2 , int[][] dp){
+
+        if(ind1 < 0){
+            return ind2 + 1;
         }
-        
-        // Fill the DP table
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1]; // No change needed if characters match
-                } else {
-                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], // Replace
-                                                 dp[i][j - 1]),    // Insert
-                                                 dp[i - 1][j]) + 1; // Delete
-                }
-            }
+        if(ind2 < 0 ){
+            return ind1 + 1;
         }
-        
-        // The answer is in the bottom-right cell of the DP table
-        return dp[m][n];
+        if(dp[ind1][ind2] != -1) return dp[ind1][ind2];
+        if(s1.charAt(ind1) == s2.charAt(ind2)){
+            return dp[ind1][ind2] =  f(ind1 - 1 , ind2 - 1 , s1 , s2 , dp);
+        }else{
+            return dp[ind1][ind2] = 1 + Math.min(f(ind1 - 1, ind2 - 1, s1 , s2 , dp) , Math.min(f(ind1 , ind2 - 1 , s1 , s2 , dp) , f(ind1 - 1 , ind2 , s1 , s2 , dp)));
+        }
+
     }
 }
