@@ -7,47 +7,44 @@
  * }
  */
  
-public class Solution {
+class Solution {
     public int findInMountainArray(int target, MountainArray mountainArr) {
-        int peak = findPeak(mountainArr);
+        int n = mountainArr.length();
         
-        int index = binarySearchInc(mountainArr, target, 0, peak);
-        if (index != -1) return index;
-        
-        return binarySearchDec(mountainArr, target, peak + 1, mountainArr.length() - 1);
-    }
-
-    private int findPeak(MountainArray arr) {
-        int left = 0, right = arr.length() - 1;
+        // Step 1: Find the peak index
+        int left = 0, right = n - 1;
         while (left < right) {
-            int mid = (left + right) / 2;
-            if (arr.get(mid) < arr.get(mid + 1)) {
+            int mid = left + (right - left) / 2;
+            if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
                 left = mid + 1;
             } else {
                 right = mid;
             }
         }
-        return left;
+        int peak = left;
+
+        // Step 2: Binary search on the increasing side
+        int index = binarySearch(mountainArr, target, 0, peak, true);
+        if (index != -1) return index;
+
+        // Step 3: Binary search on the decreasing side
+        return binarySearch(mountainArr, target, peak + 1, n - 1, false);
     }
 
-    private int binarySearchInc(MountainArray arr, int target, int left, int right) {
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            int val = arr.get(mid);
-            if (val == target) return mid;
-            else if (val < target) left = mid + 1;
-            else right = mid - 1;
-        }
-        return -1;
-    }
+    // Modified binary search for both increasing/decreasing sides
+    private int binarySearch(MountainArray arr, int target, int start, int end, boolean ascending) {
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            int midVal = arr.get(mid);
+            if (midVal == target) return mid;
 
-    private int binarySearchDec(MountainArray arr, int target, int left, int right) {
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            int val = arr.get(mid);
-            if (val == target) return mid;
-            else if (val > target) left = mid + 1;
-            else right = mid - 1;
+            if (ascending) {
+                if (target < midVal) end = mid - 1;
+                else start = mid + 1;
+            } else {
+                if (target > midVal) end = mid - 1;
+                else start = mid + 1;
+            }
         }
         return -1;
     }
