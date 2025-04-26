@@ -26,18 +26,20 @@ class Solution {
         if(root==null) return root;
         Queue<Node> q=new LinkedList<>();
         q.add(root);
+                    
+
         while(!q.isEmpty()){
+            Node prev=null;
             int n=q.size();
-            Node p=null;
             for(int i=0;i<n;i++){
-                Node node =q.remove();
-                if(p!=null)  p.next = node;;
-                p = node;
-                if(node.left!=null) q.add(node.left);
-                if(node.right!=null) q.add(node.right);
+            Node node=q.remove();
+            if(prev!=null) prev.next=node;
+            prev=node;
+            if(node.left!=null) q.add(node.left);
+            if(node.right!=null) q.add(node.right);
             }
-       
         }
         return root;
+
     }
 }
