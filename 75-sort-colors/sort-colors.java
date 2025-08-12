@@ -1,21 +1,30 @@
 class Solution {
-    static void bubbleSort(int[] nums) {    
-        int n = nums.length;    
-        int temp = 0;    
-         for(int i=0; i < n; i++){    
-                 for(int j=1; j < (n-i); j++){    
-                          if(nums[j-1] > nums[j]){    
-                                 //swap elements    
-                                 temp = nums[j-1];    
-                                 nums[j-1] = nums[j];    
-                                 nums[j] = temp;    
-                         }          
-                }    
-         }   
-    }    
     public void sortColors(int[] nums) {
+        int n=nums.length;
+        int i=0;
+        int j=0;
+        int k=n-1;
 
-        bubbleSort(nums);
+        while(j<=k){
+            if(nums[j]==1){
+                j++;
+            }
+            else if(nums[j]==2){
+                int temp=nums[j];
+                nums[j]=nums[k];
+                nums[k]=temp;
+                k--;
+            }
+            else{
+                int temp=nums[j];
+                nums[j]=nums[i];
+                nums[i]=temp;
+                i++;
+                j++;
+            }
+
+           
+        }
 
         
     }
